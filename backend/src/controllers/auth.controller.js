@@ -15,9 +15,9 @@ export const signup = async (req, res) => {
 
     }
 
-    const User = await User.findOne({ email });
+    const existingUser = await User.findOne({ email });
 
-    if (User) return res.status(400).json({message: "Email already exists"});
+    if (existingUser) return res.status(400).json({message: "Email already exists"});
     
 
     const salt = await bcrypt.genSalt(10);
@@ -35,7 +35,7 @@ export const signup = async (req, res) => {
         await newUser.save();
 
         res.status(201).json({
-            _id: newUser_id,
+            _id: newUser._id,
             fullName: newUser.fullName,
             email: newUser.email,
             profilePic: newUser.profilePic,
